@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Networks</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script src="./js/d3.js"></script>
+    <style>
+        .O-1 {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 1em;
+        }
+        
+        .O-1::before {
+            content: "";
+            width: 1em;
+            height: 1em;
+            margin-right: 0.5em;
+            background: var(--color);
+        }
+
+        .O-2 {
+            display: flex;
+            margin-left: 0px;
+        }
+
+        .O-2-item {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; float: left;">
+        <div id="col1" style="width: 50%; float: left;">
+            <div id="eTypes">
+                Edge types:
+                <input type="checkbox" id="Email" name="Email" value="Email" checked>
+                <label for="Email"> Email</label>
+                <input type="checkbox" id="Phone" name="Phone" value="Phone" checked>
+                <label for="Phone"> Phone</label>
+                <input type="checkbox" id="Sell" name="Sell" value="Sell" checked>
+                <label for="Sell"> Sell</label>
+                <input type="checkbox" id="Buy" name="Buy" value="Buy" checked>
+                <label for="Buy"> Buy</label>
+                <input type="checkbox" id="Author-of" name="Author-of" value="Author-of" checked>
+                <label for="Author-of"> Author-of</label>
+                <input type="checkbox" id="Travels-to" name="Travels-to" value="Travels-to" checked>
+                <label for="Travels-to"> Travels-to</label>
+            </div>
+            <!--<div id="nodeColor">
+                Node color:
+                <input type="radio" id="node" name="color" value="NodeType">
+                <label for="male">Node type</label>
+                <input type="radio" id="phone" name="color" value="PhoneLocation">
+                <label for="female">Phone location</label>
+                <input type="radio" id="travel" name="color" value="CountryLocation">
+                <label for="other">Travel-to location</label>
+                <input type="radio" id="location" name="color" value="Location" checked>
+                <label for="other">All location</label>
+            </div>-->
+        </div>
+        <div id="col2" style="width: 50%; float: left;">
+            <div id="nodeLegend" class="O-2">Node types: </div>
+            <div id="locationLegend">Locations: </div>
+        </div>
+    </div>
+
+    <div id="network"></div>
+</body>
+<script>
+    const width = 300, height = 300;
+    const eTypes = ["Email", "Phone", "Sell", "Buy", "Author-of", "Travels-to"];
+    const sel_eTypes = ["Email", "Phone", "Sell", "Buy", "Author-of", "Travels-to"];
+
+    const color = d3.scaleOrdinal()
+        .domain([0, 1, 2, 3, 4, 5, -1])
+        .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#7f7f7f"]);
+    
+    const shapes = d3.scaleOrdinal()
+        .domain(["Person", "Product", "Document", "Country"])
+        .range([d3.symbolCircle, d3.symbolCross, d3.symbolSquare, d3.symbolStar]);
+
+    /*d3.select("#nodeLegend")
+        .selectAll("span")
+        .data(["Person", "Product", "Document", "Country"])
+        .join("span")
+            .attr("class", "O-1")
+            .style("--color", d => color(d))
+            .text(d => d);*/
+
+    shapes.domain().map((name, i) => {
+        let legend = d3.select("#nodeLegend")
+            .append("div")
+            .attr("class", "O-2-item");
+        
+        legend.append("svg")
+            .attr("viewBox", "-7 -7 14 14")
+            .attr("width", "14")
+            .attr("height", "14")
+            .style("margin-right", "3px")
+            .append("path")
+                .attr("fill", "#7f7f7f")
+                .attr("d", d3.symbol().size(80).type(shapes(name)));
+        legend.append("span").html(name)
+    });
+
+    d3.select("#locationLegend")
+        .selectAll("span")
+        .data([0, 1, 2, 3, 4, 5, -1])
+        .join("span")
+            .attr("class", "O-1")
+            .style("--color", d => color(d))
+            .text(d => d == -1 ? "Unknown" : d);
+
+    function drag(simulation) {
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+        
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        return d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+    }
+
+    Promise.all([
+        d3.json("data/CGCS-Template.json"),
+        d3.json("data/Q1-Graph1.json"),
+        d3.json("data/Q1-Graph2.json"),
+        d3.json("data/Q1-Graph3.json"),
+        d3.json("data/Q1-Graph4.json"),
+        d3.json("data/Q1-Graph5.json"),
+    ]).then(function(files) {
+        files.forEach(function(data, index) {
+            createGraph(data, sel_eTypes);
+        })
+
+        d3.selectAll("input[type='checkbox']")
+            .on("click", function() {
+                if (sel_eTypes.includes(this.value)) {
+                    sel_eTypes.splice(sel_eTypes.indexOf(this.value), 1);
+                }
+                else {
+                    sel_eTypes.push(this.value);
+                }
+                
+                d3.select("#network").selectAll("*").remove();
+                files.forEach(function(data, index) {
+                    createGraph(data, sel_eTypes);
+                });
+            });
+
+        d3.selectAll("input[name='color']")
+            .on("change", function() {
+                d3.select("#network").selectAll("*").remove();
+                files.forEach(function(data, index) {
+                    createGraph(data, sel_eTypes);
+                });
+            })
+
+    });
+
+    function createGraph(data, sel_eTypes) {
+        const {name, nodes, links} = data;
+
+        let nodeColor = "Location"//document.querySelector('input[name="color"]:checked').value;
+
+        links2 = []
+        for (i = 0; i < links.length; i++) {
+            temp = links[i]
+            if (sel_eTypes.includes(temp.eType)) {
+                links2.push(temp)
+            }
+        }
+
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(links2).id(d => d.id))
+            .force("charge", d3.forceManyBody())
+            .force("x", d3.forceX())
+            .force("y", d3.forceY());
+        
+        const svg = d3.select("#network")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+        svg.append("text")
+            .attr("x", -width / 2)
+            .attr("y", -height / 2 + 20)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("text-anchor", "start")
+            .text(name);
+
+        const link = svg.append("g")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6)
+            .selectAll("line")
+            .data(links2)
+            .join("line")
+                .attr("stroke-width", d => Math.sqrt(d.value));
+        
+        /*const node = svg.append("g")
+                .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5)
+            .selectAll("circle")
+            .data(nodes)
+            .join("circle")
+                .attr("r", 5)
+                .attr("fill", d => color(d[nodeColor]))
+                .call(drag(simulation));*/
+
+        const node = svg.append("g")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5)
+            .selectAll("path")
+            .data(nodes)
+            .join("path")
+                .attr("d", d3.symbol()
+                    .size(function(d) { return 80; })
+                    .type(function(d) { return shapes(d.NodeType) }))
+                .attr("fill", d => color(d[nodeColor]))
+                .call(drag(simulation));
+
+        node.append("title")
+            .text(d => d.NodeType + " " + d.id);
+        
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node
+                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+        });
+    }
+</script>
+</html>
