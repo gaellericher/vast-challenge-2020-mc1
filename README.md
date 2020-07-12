@@ -2,8 +2,11 @@
 
 This project is a submission to [Visual Analytics Science and Technology (VAST) Challenge 2020](https://vast-challenge.github.io/2020/) ([Mini Challenge 1](https://vast-challenge.github.io/2020/MC1.html)). Submission details are provided [here](https://vast-challenge.github.io/2020/Submissions.html). 
 
-Submission package: [video]() , [report](https://gaellericher.github.io/vast-challenge-2020-mc1/AVIZ-Tovanich-MC1/)
+Submission package: [video]() , [report](./AVIZ-Tovanich-MC1/)
 
+- [node-link views](./node-link-view/networks.html)
+- [person-match for candidate graphs](./person-comparison-view/candidates.html)
+- [person-match for subgraph extracted from seed 1 and 3](./person-comparison-view/single.html)
 
 ### Tools
 
