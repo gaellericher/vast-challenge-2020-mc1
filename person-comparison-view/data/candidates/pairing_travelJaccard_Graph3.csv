@@ -1,0 +1,16 @@
+templateID,candidateID,demographicsCosine,travelJaccard,profileJaccard,dtwAllEdges,dtwCommunication,glPhone-dir4,glPhone-undir5,glEmail-dir4,glEmail-undir5,glTravel-dir4,glTravel-undir5,glCommunication-dir4,glCommunication-undir5,dtwTravel,Country,F_Smoker,F_Education,F_Property,F_Mortgage,F_Gas,F_Rich,F_Renting,templateNeighbors,candidateNeighbors,nbCommonCommNeighbors
+77,612711,,1.0,,7.16547813622768e-163,,,,,,0.7087207083634544,0.44102784308544096,,,2.3603767833730263e-162,False,False,False,False,False,False,False,False,5,2,0.0
+86,534034,,1.0,,0.04428074427700476,,,,,,0.6249897648370613,0.13646389575034085,,,,False,False,False,False,False,False,False,False,5,5,0.0
+84,542965,,0.0,,0.0,,,,,,1.0,0.4013726847190166,,,,False,False,False,False,False,False,False,False,2,24,0.0
+74,635665,,0.0,,0.37833484494817654,,,,,,0.7246410793342437,0.13379903762833495,,,,False,False,False,False,False,False,False,False,4,4,0.0
+41,643925,,0.0,,0.5239368319955839,,,,,,0.6915411659803554,0.10294987108089511,,,,False,False,False,False,False,False,False,False,36,4,0.0
+85,538892,,1.0,,7.16547813622768e-163,,,,,,0.8176715822165309,0.3368399025211613,,,,False,False,False,False,False,False,False,False,5,29,0.0
+78,599441,,0.0,,0.0,,,,,,0.6626659034257985,0.12511135220378342,,,,False,False,False,False,False,False,False,False,5,4,0.0
+73,643411,,1.0,,0.28697202159177576,,,,,,0.7280690344176978,0.4128392691566226,,,0.9453131868733217,False,False,False,False,False,False,False,False,4,2,0.0
+83,568093,,1.0,,0.6845636938812867,,,,,,0.8332738092679695,0.29314080212967364,,,,False,False,False,False,False,False,False,False,2,4,0.0
+75,629627,,1.0,,0.0,,,,,,0.6920226474314702,0.14678670152901852,,,,False,False,False,False,False,False,False,False,4,4,0.0
+87,464459,,0.8333333333333334,,0.06262242910851495,,,,,,0.6575834302930135,0.12877448852699253,,,,False,False,False,False,False,False,False,False,5,3,0.0
+40,649553,,0.0,,0.21236298927940875,,,,,,0.6915411659803554,0.10294987108089511,,,,False,False,False,False,False,False,False,False,29,4,0.0
+79,598006,,1.0,,0.06262242910851495,,,,,,0.5902687235462258,0.46431784912753993,,,0.2062842492517587,False,False,False,False,False,False,False,False,5,3,0.0
+82,570284,,1.0,,0.2693492521018819,,,,,,0.8792281857913565,0.39738835083736007,,,,False,False,False,False,False,False,False,False,2,5,0.0
+80,585212,,0.0,,0.06262242910851495,,,,,,0.6626659034257985,0.12511135220378342,,,,False,False,False,False,False,False,False,False,5,4,0.0

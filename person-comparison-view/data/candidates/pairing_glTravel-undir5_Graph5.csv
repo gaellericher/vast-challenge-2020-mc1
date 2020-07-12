@@ -1,0 +1,12 @@
+templateID,candidateID,demographicsCosine,travelJaccard,profileJaccard,dtwAllEdges,dtwCommunication,glPhone-dir4,glPhone-undir5,glEmail-dir4,glEmail-undir5,glTravel-dir4,glTravel-undir5,glCommunication-dir4,glCommunication-undir5,dtwTravel,Country,F_Smoker,F_Education,F_Property,F_Mortgage,F_Gas,F_Rich,F_Renting,templateNeighbors,candidateNeighbors,nbCommonCommNeighbors
+85,619322,,0.7142857142857143,,0.5368754921931592,,,,,,0.6618882914553764,0.3480450560087848,,,0.2807120402315455,False,False,False,False,False,False,False,False,5,43,0.0
+87,477657,,1.0,,0.46230454269461646,,,,,,0.7094693282077342,0.3803794930209852,,,0.2790361324757367,False,False,False,False,False,False,False,False,5,28,1.0
+79,625756,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,5,2,0.0
+70,499467,,,,,,,,,,0.4528151637720488,0.0025290844575177112,,,,False,False,False,False,False,False,False,False,13,1,1.0
+39,616453,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,27,4,0.0
+78,594308,,0.8333333333333334,,0.4106427291215469,,,,,,0.7522193587154865,0.3317272764965159,,,0.17859152928948988,False,False,False,False,False,False,False,False,5,32,0.0
+86,561157,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,5,3,0.0
+40,509607,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,29,3,0.0
+77,573137,,1.0,,0.08856148855400953,,,,,,0.7668304308721341,0.3110570693677779,,,0.8882176431559488,False,False,False,False,False,False,False,False,5,25,0.0
+71,483784,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,9,30,0.0
+80,657173,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,5,1,0.0

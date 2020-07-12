@@ -1,0 +1,15 @@
+templateID,candidateID,demographicsCosine,travelJaccard,profileJaccard,dtwAllEdges,dtwCommunication,glPhone-dir4,glPhone-undir5,glEmail-dir4,glEmail-undir5,glTravel-dir4,glTravel-undir5,glCommunication-dir4,glCommunication-undir5,dtwTravel,Country,F_Smoker,F_Education,F_Property,F_Mortgage,F_Gas,F_Rich,F_Renting,templateNeighbors,candidateNeighbors,nbCommonCommNeighbors
+73,538892,,1.0,,0.28697202159177576,,,,,,0.8894589570803649,0.3266448713516847,,,,False,False,False,False,False,False,False,False,4,2,0.0
+85,625756,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,5,7,0.0
+87,499467,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,5,7,0.0
+75,657173,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,4,3,0.0
+79,629627,,0.25,,0.06262242910851495,,,,,,0.6460256812769142,0.13797139476756917,,,,False,False,False,False,False,False,False,False,5,37,0.0
+70,599441,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,13,29,0.0
+39,572391,0.41358685198786277,,0.5,0.22578837914485933,0.21767302573967065,0.8484195200234101,0.5068549872267922,0.6649295385161405,0.541864280621561,,,0.7892083950325547,0.7703638204928861,,False,False,False,False,False,False,False,False,27,2,0.0
+78,568093,,1.0,,0.1252448582170299,,,,,,0.6784031235772803,0.12790863090316795,,,,False,False,False,False,False,False,False,False,5,3,0.0
+86,534034,,1.0,,0.04428074427700476,,,,,,0.6249897648370613,0.13646389575034085,,,,False,False,False,False,False,False,False,False,5,29,0.0
+40,635665,0.3346751377240842,1.0,0.8333333333333334,0.3223686843157241,0.2546328832592281,0.9264438948957059,0.4795335614316765,0.8431300974708864,0.7236488206624047,0.6800021755329284,0.1162072751204845,0.7756538794319036,0.7527218307687513,,False,False,False,False,False,False,False,False,29,3,0.0
+77,585212,,0.0,,0.06262242910851495,,,,,,0.6626659034257985,0.12511135220378342,,,,False,False,False,False,False,False,False,False,5,31,0.0
+41,509607,,,,,,,,,,,,,,,False,False,False,False,False,False,False,False,36,7,0.0
+80,464459,,1.0,,0.06262242910851495,,,,,,0.6784031235772803,0.12790863090316795,,,,False,False,False,False,False,False,False,False,5,3,0.0
+74,542965,,1.0,,7.16547813622768e-163,,,,,,0.8894589570803649,0.3266448713516847,,,,False,False,False,False,False,False,False,False,4,2,0.0
