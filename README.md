@@ -5,8 +5,8 @@ This project is a submission to [Visual Analytics Science and Technology (VAST) 
 Submission package: [video]() , [report](./AVIZ-Tovanich-MC1/)
 
 - [node-link views](./node-link-view/networks.html)
-- [person-match for candidate graphs](./person-comparison-view/candidates.html)
-- [person-match for subgraph extracted from seed 1 and 3](./person-comparison-view/single.html)
+- [person-match for candidate graphs](./person-pairing-view/candidates.html)
+- [person-match for subgraph extracted from seed 1 and 3](./person-pairing-view/single.html)
 
 ### Tools
 
