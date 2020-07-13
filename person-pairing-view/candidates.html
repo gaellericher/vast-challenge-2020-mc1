@@ -26,7 +26,7 @@
     }
 
     function injectCandidateName(jsonSpec, candidateGraph) {
-        let stringSpec = JSON.stringify(jsonSpec).replaceAll("candidateGraph", "'" + candidateGraph + "'")
+        let stringSpec = JSON.stringify(jsonSpec).replace(/candidateGraph/g, "'" + candidateGraph + "'")
         return JSON.parse(stringSpec)
     }
 
@@ -38,7 +38,7 @@
             .then(result => {
                 // console.log(result.data("track-matrix"))
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     view("Graph1", "view-1")
