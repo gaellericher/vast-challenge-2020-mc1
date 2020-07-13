@@ -1,0 +1,1213 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.8.json",
+  "width": 500,
+  "height": 200,
+  "padding": 0,
+  "signals": [
+    {
+      "name": "matchedNodes",
+      "update": "data('pairing').length"
+    },
+    {
+      "name": "totalNodes",
+      "value": 51
+    },
+    {
+      "name": "chartHeight",
+      "value": 50
+    },
+    {
+      "name": "chartWidth",
+      "value": 50
+    },
+    {
+      "name": "trackWidth",
+      "value": 700
+    },
+    {
+      "name": "maxPairingDistance",
+      "value": "1"
+    },
+    {
+      "name": "nodeSize",
+      "value": 10
+    },
+    {
+      "name": "arcWidth",
+      "value": 2
+    },
+    {
+      "name": "templateAxisOffset",
+      "value": 50
+    },
+    {
+      "name": "candidateAxisOffset",
+      "value": 160
+    },
+    {
+      "name": "legendY",
+      "value": -100
+    }
+  ],
+  "data": [
+    {
+      "name": "sortingMetrics",
+      "values": [
+        {
+          "value": "demographicsCosine",
+          "display": true
+        },
+        {
+          "value": "travelJaccard",
+          "display": true
+        },
+        {
+          "value": "dtwAllEdges",
+          "display": true
+        },
+        {
+          "value": "dtwCommunication",
+          "display": true
+        },
+        {
+          "value": "dtwTravel",
+          "display": true
+        },
+        {
+          "value": "glPhone-undir5",
+          "display": true
+        },
+        {
+          "value": "glEmail-undir5",
+          "display": true
+        },
+        {
+          "value": "glCommunication-undir5",
+          "display": true
+        }
+      ],
+      "transform": [
+        {
+          "type": "window",
+          "as": [
+            "key"
+          ],
+          "ops": [
+            "rank"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "template-edges",
+      "url": {
+        "signal": "'data/' + folder + '/template_edges.csv'"
+      },
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.eType == 0 || datum.eType == 1"
+        },
+        {
+          "type": "formula",
+          "as": "Status",
+          "expr": "datum['Status']"
+        },
+        {
+          "type": "formula",
+          "expr": "parseInt(datum.Time)",
+          "as": "Time"
+        }
+      ]
+    },
+    {
+      "name": "candidate-edges",
+      "url": {
+        "signal": "'data/' + folder + '/candidate_edges.csv'"
+      },
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.eType == 0 || datum.eType == 1"
+        },
+        {
+          "type": "formula",
+          "as": "Status",
+          "expr": "datum['Status']"
+        },
+        {
+          "type": "filter",
+          "expr": "datum.Status == 'supplementary'"
+        },
+        {
+          "type": "formula",
+          "expr": "parseInt(datum.Time)",
+          "as": "Time"
+        }
+      ]
+    },
+    {
+      "name": "pairing",
+      "url": {
+        "signal": "'data/' + folder + '/pairing.csv'"
+      },
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "0",
+          "as": "score"
+        },
+        {
+          "type": "collect",
+          "sort": {
+            "field": "score"
+          }
+        },
+        {
+          "type": "window",
+          "ops": [
+            "row_number"
+          ],
+          "as": [
+            "pairingScoreOrder"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "template-nodes",
+      "url": {
+        "signal": "'data/' + folder + '/template_nodes.csv'"
+      },
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.NodeType == 1"
+        },
+        {
+          "type": "lookup",
+          "from": "pairing",
+          "key": "templateID",
+          "fields": [
+            "NodeID"
+          ],
+          "as": [
+            "pairingObj"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.pairingObj)"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.pairingObj.pairingScoreOrder",
+          "as": "pairingScoreOrder"
+        },
+        {
+          "type": "window",
+          "sort": {
+            "field": "order",
+            "order": "ascending"
+          },
+          "ops": [
+            "row_number"
+          ],
+          "as": [
+            "order"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "candidate-nodes",
+      "url": {
+        "signal": "'data/' + folder + '/candidate_nodes.csv'"
+      },
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.NodeType == 1"
+        },
+        {
+          "type": "lookup",
+          "from": "pairing",
+          "key": "candidateID",
+          "fields": [
+            "NodeID"
+          ],
+          "as": [
+            "pairingObj"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.pairingObj)"
+        },
+        {
+          "type": "lookup",
+          "from": "template-nodes",
+          "key": "NodeID",
+          "fields": [
+            "pairingObj.templateID"
+          ],
+          "as": [
+            "pairedNode"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.pairedNode.order",
+          "as": "order"
+        }
+      ]
+    },
+    {
+      "name": "displayed-template-edges",
+      "source": "template-edges",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "template-nodes",
+          "key": "NodeID",
+          "fields": [
+            "Source",
+            "Target"
+          ],
+          "as": [
+            "source",
+            "target"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.source) && isValid(datum.target)"
+        }
+      ]
+    },
+    {
+      "name": "displayed-candidate-edges",
+      "source": "candidate-edges",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "candidate-nodes",
+          "key": "NodeID",
+          "fields": [
+            "Source",
+            "Target"
+          ],
+          "as": [
+            "source",
+            "target"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.source) && isValid(datum.target)"
+        }
+      ]
+    },
+    {
+      "name": "displayed-template-edges-agg",
+      "source": "displayed-template-edges",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Source",
+            "Target",
+            "Status"
+          ],
+          "fields": [
+            "Weight",
+            null,
+            "eType",
+            "eType"
+          ],
+          "ops": [
+            "sum",
+            "count",
+            "min",
+            "max"
+          ],
+          "as": [
+            "Weight",
+            "count",
+            "eType_min",
+            "eType_max"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
+        },
+        {
+          "type": "lookup",
+          "from": "template-nodes",
+          "key": "NodeID",
+          "fields": [
+            "Source",
+            "Target"
+          ],
+          "as": [
+            "source",
+            "target"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "displayed-candidate-edges-agg",
+      "source": "displayed-candidate-edges",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Source",
+            "Target",
+            "Status"
+          ],
+          "fields": [
+            "Weight",
+            null,
+            "eType",
+            "eType"
+          ],
+          "ops": [
+            "sum",
+            "count",
+            "min",
+            "max"
+          ],
+          "as": [
+            "Weight",
+            "count",
+            "eType_min",
+            "eType_max"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
+        },
+        {
+          "type": "lookup",
+          "from": "candidate-nodes",
+          "key": "NodeID",
+          "fields": [
+            "Source",
+            "Target"
+          ],
+          "as": [
+            "source",
+            "target"
+          ]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "arcview",
+      "type": "group",
+      "data": [
+        {
+          "name": "track-matrix",
+          "source": "pairing",
+          "transform": [
+            {
+              "type": "fold",
+              "fields": [
+                "demographicsCosine",
+                "travelJaccard",
+                "dtwAllEdges",
+                "dtwCommunication",
+                "dtwTravel",
+                "glPhone-undir5",
+                "glEmail-undir5",
+                "glCommunication-undir5"
+              ],
+              "as": [
+                "metric",
+                "value"
+              ]
+            },
+            {
+              "type": "lookup",
+              "from": "candidate-nodes",
+              "key": "NodeID",
+              "fields": [
+                "candidateID"
+              ],
+              "values": [
+                "order"
+              ]
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "name": "node-position",
+          "type": "band",
+          "domain": {
+            "data": "template-nodes",
+            "field": "order",
+            "sort": true
+          },
+          "range": [
+            0,
+            {
+              "signal": "trackWidth"
+            }
+          ]
+        }
+      ],
+      "encode": {
+        "enter": {
+          "y": {
+            "signal": "templateAxisOffset"
+          },
+          "x": {
+            "value": 0
+          },
+          "height": {
+            "signal": "candidateAxisOffset-templateAxisOffset"
+          },
+          "width": {
+            "signal": "trackWidth"
+          },
+          "stroke": {
+            "value": "white"
+          }
+        }
+      },
+      "axes": [
+        {
+          "orient": "left",
+          "scale": "metricScale",
+          "labelBaseline": "bottom",
+          "ticks": false,
+          "offset": {
+            "signal": "nodeSize"
+          },
+          "domain": false
+        }
+      ],
+      "marks": [
+        {
+          "type": "symbol",
+          "name": "top-nodes",
+          "from": {
+            "data": "template-nodes"
+          },
+          "encode": {
+            "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
+              "opacity": {
+                "value": 1
+              },
+              "tooltip": {
+                "signal": "{'graph':'Template', 'Id': datum.NodeID, 'Paired to': datum.pairingObj.candidateID, 'pairingScore': datum.pairingObj.score, 'Smoker':datum.F_Smoker, 'Education':datum.F_Education, 'Gas':datum.F_Gas, 'Property':datum.F_Property, 'Mortgage':datum.F_Mortgage, 'Renting':datum.F_Renting, 'Rich':datum.F_Rich }"
+              }
+            },
+            "update": {
+              "xc": {
+                "scale": "node-position",
+                "field": "order"
+              },
+              "yc": {
+                "value": 0
+              },
+              "size": {
+                "signal": "nodeSize*nodeSize"
+              },
+              "fill": {
+                "signal": "scale('nodeCountries', datum['Country']) || 'white'"
+              },
+              "stroke": {
+                "value": "black"
+              },
+              "opacity": {
+                "value": 1
+              }
+            },
+            "hover": {
+              "size": {
+                "signal": "2*nodeSize*nodeSize"
+              }
+            }
+          }
+        },
+        {
+          "type": "symbol",
+          "name": "bottom-nodes",
+          "from": {
+            "data": "candidate-nodes"
+          },
+          "encode": {
+            "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
+              "opacity": {
+                "value": 1
+              },
+              "tooltip": {
+                "signal": "{'graph':'Candidate' ,'Id': datum.NodeID, 'Paired to': datum.pairingObj.templateID, 'pairingScore': datum.pairingObj.score, 'Smoker':datum.F_Smoker, 'Education':datum.F_Education, 'Gas':datum.F_Gas, 'Property':datum.F_Property, 'Mortgage':datum.F_Mortgage, 'Renting':datum.F_Renting, 'Rich':datum.F_Rich  }"
+              }
+            },
+            "update": {
+              "xc": {
+                "scale": "node-position",
+                "field": "order"
+              },
+              "yc": {
+                "signal": "candidateAxisOffset-templateAxisOffset"
+              },
+              "size": {
+                "signal": "nodeSize*nodeSize"
+              },
+              "fill": {
+                "signal": "scale('nodeCountries', datum['Country']) || 'white'"
+              },
+              "stroke": {
+                "value": "black"
+              },
+              "opacity": {
+                "value": 1
+              }
+            },
+            "hover": {
+              "size": {
+                "signal": "2*nodeSize*nodeSize"
+              }
+            }
+          }
+        },
+        {
+          "name": "template-links",
+          "type": "path",
+          "from": {
+            "data": "displayed-template-edges-agg"
+          },
+          "encode": {
+            "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
+              "tooltip": {
+                "signal": "{'Status': datum.Status, 'Source': datum.Source,'Target':datum.Target, 'Type': datum.eType }"
+              }
+            },
+            "update": {
+              "stroke": {
+                "field": "Status",
+                "scale": "edgeStatusColor"
+              },
+              "strokeOpacity": {
+                "value": 0.5
+              },
+              "strokeWidth": {
+                "signal": "arcWidth"
+              },
+              "opacity": {
+                "value": 0.5
+              }
+            },
+            "hover": {
+              "strokeOpacity": {
+                "value": 1
+              }
+            }
+          },
+          "transform": [
+            {
+              "type": "lookup",
+              "from": "top-nodes",
+              "key": "datum.NodeID",
+              "fields": [
+                "datum.Source",
+                "datum.Target"
+              ],
+              "as": [
+                "sourceNode",
+                "targetNode"
+              ]
+            },
+            {
+              "type": "linkpath",
+              "sourceX": {
+                "expr": "min(datum.sourceNode.x, datum.targetNode.x)"
+              },
+              "targetX": {
+                "expr": "max(datum.sourceNode.x, datum.targetNode.x)"
+              },
+              "sourceY": {
+                "expr": "-nodeSize"
+              },
+              "targetY": {
+                "expr": "-nodeSize"
+              },
+              "shape": "curve"
+            }
+          ]
+        },
+        {
+          "name": "candidate-links",
+          "type": "path",
+          "from": {
+            "data": "displayed-candidate-edges-agg"
+          },
+          "encode": {
+            "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
+              "tooltip": {
+                "signal": "{'Status': datum.Status, 'Source': datum.Source, 'Target':datum.Target, 'Type': datum.eType }"
+              }
+            },
+            "update": {
+              "stroke": {
+                "field": "Status",
+                "scale": "edgeStatusColor"
+              },
+              "strokeOpacity": {
+                "value": 0.5
+              },
+              "strokeWidth": {
+                "signal": "arcWidth"
+              },
+              "opacity": {
+                "value": 0.5
+              }
+            },
+            "hover": {
+              "strokeOpacity": {
+                "value": 1
+              }
+            }
+          },
+          "transform": [
+            {
+              "type": "lookup",
+              "from": "bottom-nodes",
+              "key": "datum.NodeID",
+              "fields": [
+                "datum.Source",
+                "datum.Target"
+              ],
+              "as": [
+                "sourceNode",
+                "targetNode"
+              ]
+            },
+            {
+              "type": "linkpath",
+              "sourceX": {
+                "expr": "max(datum.sourceNode.x, datum.targetNode.x)"
+              },
+              "targetX": {
+                "expr": "min(datum.sourceNode.x, datum.targetNode.x)"
+              },
+              "sourceY": {
+                "expr": "candidateAxisOffset-templateAxisOffset+nodeSize"
+              },
+              "targetY": {
+                "expr": "candidateAxisOffset-templateAxisOffset+nodeSize"
+              },
+              "shape": "curve"
+            }
+          ]
+        },
+        {
+          "name": "track-cells",
+          "type": "symbol",
+          "from": {
+            "data": "track-matrix"
+          },
+          "encode": {
+            "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
+              "opacity": {
+                "value": 1
+              },
+              "tooltip": {
+                "signal": "{'value':datum.value, 'name':datum.metric, 'templateID':datum.templateID, 'candidateID':datum.candidateID }"
+              }
+            },
+            "update": {
+              "shape": [
+                {
+                  "test": "isValid(toNumber(datum.value))",
+                  "value": "square"
+                },
+                {
+                  "value": "cross"
+                }
+              ],
+              "angle": [
+                {
+                  "test": "isValid(toNumber(datum.value))",
+                  "value": 0
+                },
+                {
+                  "value": 45
+                }
+              ],
+              "fill": [
+                {
+                  "test": "isValid(toNumber(datum.value))",
+                  "field": "value",
+                  "scale": "distanceScore"
+                },
+                {
+                  "value": "lightgray"
+                }
+              ],
+              "xc": {
+                "field": "order",
+                "scale": "node-position"
+              },
+              "yc": {
+                "field": "metric",
+                "scale": "metricScale"
+              },
+              "size": {
+                "signal": "nodeSize*nodeSize"
+              },
+              "strokeWidth": {
+                "value": 0
+              },
+              "opacity": {
+                "value": 1
+              }
+            },
+            "hover": {
+              "stroke": {
+                "value": "black"
+              },
+              "strokeWidth": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "barchart",
+      "type": "group",
+      "data": [
+        {
+          "name": "aggregate-metric",
+          "source": "pairing",
+          "transform": [
+            {
+              "type": "aggregate",
+              "fields": [
+                "demographicsCosine",
+                "travelJaccard",
+                "dtwAllEdges",
+                "dtwCommunication",
+                "dtwTravel",
+                "glPhone-undir5",
+                "glEmail-undir5",
+                "glCommunication-undir5"
+              ],
+              "ops": [
+                "mean",
+                "mean",
+                "mean",
+                "mean",
+                "mean",
+                "mean",
+                "mean",
+                "mean"
+              ],
+              "as": [
+                "demographicsCosine",
+                "travelJaccard",
+                "dtwAllEdges",
+                "dtwCommunication",
+                "dtwTravel",
+                "glPhone-undir5",
+                "glEmail-undir5",
+                "glCommunication-undir5"
+              ]
+            },
+            {
+              "type": "fold",
+              "fields": [
+                "demographicsCosine",
+                "travelJaccard",
+                "dtwAllEdges",
+                "dtwCommunication",
+                "dtwTravel",
+                "glPhone-undir5",
+                "glEmail-undir5",
+                "glCommunication-undir5"
+              ],
+              "as": [
+                "category",
+                "amount"
+              ]
+            },
+            {
+              "type": "formula",
+              "as": "amount",
+              "expr": "isDefined(datum.amount) ? datum.amount : 0"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "name": "tooltip",
+          "value": {},
+          "on": [
+            {
+              "events": "rect:mouseover",
+              "update": "datum"
+            },
+            {
+              "events": "rect:mouseout",
+              "update": "{}"
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "name": "xscale",
+          "domain": [
+            0,
+            1
+          ],
+          "nice": true,
+          "range": [
+            0,
+            {
+              "signal": "chartWidth"
+            }
+          ]
+        }
+      ],
+      "encode": {
+        "enter": {
+          "y": {
+            "signal": "templateAxisOffset"
+          },
+          "x": {
+            "signal": "trackWidth"
+          },
+          "height": {
+            "signal": "candidateAxisOffset-templateAxisOffset"
+          },
+          "width": {
+            "signal": "chartWidth"
+          },
+          "stroke": {
+            "value": "white"
+          }
+        }
+      },
+      "axes": [
+        {
+          "orient": "bottom",
+          "scale": "xscale",
+          "tickCount": 3
+        }
+      ],
+      "marks": [
+        {
+          "type": "rect",
+          "from": {
+            "data": "aggregate-metric"
+          },
+          "encode": {
+            "cursor": {
+              "value": "pointer"
+            },
+            "enter": {
+              "yc": {
+                "scale": "metricScale",
+                "field": "category"
+              },
+              "height": {
+                "scale": "metricScale",
+                "band": 1
+              },
+              "x": {
+                "scale": "xscale",
+                "field": "amount"
+              },
+              "x2": {
+                "scale": "xscale",
+                "value": 0
+              }
+            },
+            "update": {
+              "fill": {
+                "scale": "distanceScore",
+                "field": "amount"
+              }
+            },
+            "hover": {
+              "fill": {
+                "value": "darkgray"
+              }
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "align": {
+                "value": "left"
+              },
+              "baseline": {
+                "value": "bottom"
+              },
+              "fill": {
+                "value": "black"
+              }
+            },
+            "update": {
+              "yc": {
+                "scale": "metricScale",
+                "signal": "tooltip.category",
+                "band": 0.5
+              },
+              "x": {
+                "scale": "xscale",
+                "signal": "tooltip.amount",
+                "offset": {
+                  "value": 2
+                }
+              },
+              "text": {
+                "signal": "isDefined(tooltip.amount) ? format(tooltip.amount, ',.2f'): ''"
+              },
+              "fillOpacity": [
+                {
+                  "test": "datum === tooltip",
+                  "value": 0
+                },
+                {
+                  "value": 1
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "labels",
+      "type": "group",
+      "marks": [
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "x": {
+                "signal": "-nodeSize"
+              },
+              "yc": {
+                "signal": "templateAxisOffset"
+              },
+              "text": {
+                "value": "template"
+              },
+              "align": {
+                "value": "right"
+              },
+              "fontStyle": {
+                "value": "italic"
+              },
+              "fontWeight": {
+                "value": "bold"
+              },
+              "baseline": {
+                "value": "middle"
+              },
+              "fill": {
+                "value": "gray"
+              }
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "x": {
+                "signal": "-nodeSize"
+              },
+              "yc": {
+                "signal": "candidateAxisOffset"
+              },
+              "text": {
+                "value": "candidate"
+              },
+              "align": {
+                "value": "right"
+              },
+              "fontStyle": {
+                "value": "italic"
+              },
+              "fontWeight": {
+                "value": "bold"
+              },
+              "baseline": {
+                "value": "middle"
+              },
+              "fill": {
+                "value": "gray"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "edgeStatusColor",
+      "type": "ordinal",
+      "range": {
+        "scheme": [
+          "white",
+          "gray",
+          "mediumseagreen",
+          "crimson",
+          "white"
+        ]
+      },
+      "domain": [
+        "supplementary",
+        "common",
+        "missing"
+      ]
+    },
+    {
+      "name": "distanceScore",
+      "type": "linear",
+      "reverse": true,
+      "range": {
+        "scheme": "blues"
+      },
+      "domain": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "nodeCountries",
+      "type": "ordinal",
+      "round": true,
+      "range": {
+        "scheme": "set2"
+      },
+      "domain": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "metricScale",
+      "type": "band",
+      "range": [
+        {
+          "signal": "nodeSize"
+        },
+        {
+          "signal": "candidateAxisOffset-templateAxisOffset"
+        }
+      ],
+      "padding": 0.1,
+      "domain": {
+        "data": "sortingMetrics",
+        "field": "value"
+      }
+    }
+  ],
+  "title": {
+    "text": {
+      "signal": "'Person-pairing comparison view between template (top) and candidate (bottom). Matched ' + matchedNodes + '/' + totalNodes"
+    }
+  },
+  "legends": [
+    {
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 0
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
+      "title": "Communication links",
+      "fill": "edgeStatusColor",
+      "direction": "horizontal"
+    },
+    {
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 250
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
+      "title": "Distance",
+      "fill": "distanceScore",
+      "direction": "horizontal"
+    },
+    {
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 500
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
+      "title": "Country (from phone calls)",
+      "fill": "nodeCountries",
+      "direction": "horizontal"
+    }
+  ]
+}
