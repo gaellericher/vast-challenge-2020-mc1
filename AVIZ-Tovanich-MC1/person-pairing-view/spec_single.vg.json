@@ -14,19 +14,14 @@
     },
     {
       "name": "folder",
-      "value": "seed1-travels-demo-greedy",
+      "value": "seed1-travels-demo-time-greedy2",
       "bind": {
         "name": "Candidate graph: ",
         "input": "select",
         "options": [
-          "seed1-travels-demo-greedy",
-          "seed1-travels-demo-multi-greedy",
-          "seed1-travels-demo-multi-time-greedy",
-          "seed3-travels-demo-greedy",
-          "seed3-travels-demo-multi-greedy",
-          "seed3-travels-demo-multi-time-greedy",
-          "best",
-          "best-666"
+          "seed1-travels-demo-time-greedy2",
+          "seed3-travels-demo-time-greedy2",
+          "best"
         ]
       }
     },
@@ -52,11 +47,11 @@
     },
     {
       "name": "templateAxisOffset",
-      "value": 50
+      "value": 40
     },
     {
       "name": "candidateAxisOffset",
-      "value": 160
+      "value": 140
     },
     {
       "name": "timelineOffset",
