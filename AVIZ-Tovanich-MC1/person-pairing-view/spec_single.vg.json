@@ -79,43 +79,29 @@
       "name": "sortingMetrics",
       "values": [
         {
-          "value": "demographicsCosine",
-          "display": true
+          "value": "demographicsCosine"
         },
         {
-          "value": "travelJaccard",
-          "display": true
+          "value": "travelJaccard"
         },
         {
-          "value": "dtwAllEdges",
-          "display": true
+          "value": "dtwAllEdges"
         },
         {
-          "value": "dtwCommunication",
-          "display": true
+          "value": "dtwCommunication"
         },
         {
-          "value": "dtwTravel",
-          "display": true
+          "value": "dtwTravel"
         },
         {
-          "value": "glPhone-undir5",
-          "display": true
+          "value": "glPhone-undir5"
         },
         {
-          "value": "glEmail-undir5",
-          "display": true
-        },
-        {
-          "value": "glCommunication-undir5",
-          "display": true
+          "value": "glEmail-undir5"
         }
+      
       ],
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.display"
-        },
         {
           "type": "window",
           "as": [
@@ -473,8 +459,7 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ],
               "as": [
                 "metric",
@@ -866,11 +851,9 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ],
               "ops": [
-                "mean",
                 "mean",
                 "mean",
                 "mean",
@@ -886,8 +869,7 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ]
             },
             {
@@ -899,8 +881,7 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ],
               "as": [
                 "category",
