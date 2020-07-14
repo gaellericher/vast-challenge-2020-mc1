@@ -7,6 +7,7 @@ Submission package: [video]() , [report](./AVIZ-Tovanich-MC1/)
 - [node-link views](./AVIZ-Tovanich-MC1/node-link-view/networks.html)
 - [person-match for candidate graphs](./AVIZ-Tovanich-MC1/person-pairing-view/candidates.html)
 - [person-match for subgraph extracted from seed 1 and 3](./AVIZ-Tovanich-MC1/person-pairing-view/single.html)
+- [manual matchmaker](./AVIZ-Tovanich-MC1/matchmaker/index.html)
 
 ### Tools
 
