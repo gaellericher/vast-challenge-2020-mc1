@@ -147,6 +147,10 @@
         d3.json("data/Q1-Graph3.json"),
         d3.json("data/Q1-Graph4.json"),
         d3.json("data/Q1-Graph5.json"),
+        d3.json("data/Q2-Seed1.json"),
+        d3.json("data/Q2-Seed3.json"),
+        d3.json("data/Q3-no_moon_intra.json"),
+        d3.json("data/Q3-demographics_matched_with_node66.json"),
     ]).then(function(files) {
         files.forEach(function(data, index) {
             createGraph(data, sel_eTypes);

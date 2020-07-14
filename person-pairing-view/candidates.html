@@ -26,7 +26,7 @@
     }
 
     function injectCandidateName(jsonSpec, candidateGraph) {
-        let stringSpec = JSON.stringify(jsonSpec).replaceAll("candidateGraph", "'" + candidateGraph + "'")
+        let stringSpec = JSON.stringify(jsonSpec).replace(/candidateGraph/g, "'" + candidateGraph + "'")
         return JSON.parse(stringSpec)
     }
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.8.json",
-  "width": 800,
-  "height": 300,
+  "width": 500,
+  "height": 200,
   "padding": 0,
   "signals": [
     {
@@ -11,24 +11,6 @@
     {
       "name": "totalNodes",
       "value": 51
-    },
-    {
-      "name": "folder",
-      "value": "seed1-travels-demo-greedy",
-      "bind": {
-        "name": "Candidate graph: ",
-        "input": "select",
-        "options": [
-          "seed1-travels-demo-greedy",
-          "seed1-travels-demo-multi-greedy",
-          "seed1-travels-demo-multi-time-greedy",
-          "seed3-travels-demo-greedy",
-          "seed3-travels-demo-multi-greedy",
-          "seed3-travels-demo-multi-time-greedy",
-          "best",
-          "best-666"
-        ]
-      }
     },
     {
       "name": "chartHeight",
@@ -41,6 +23,10 @@
     {
       "name": "trackWidth",
       "value": 700
+    },
+    {
+      "name": "maxPairingDistance",
+      "value": "1"
     },
     {
       "name": "nodeSize",
@@ -59,24 +45,8 @@
       "value": 160
     },
     {
-      "name": "timelineOffset",
-      "value": 250
-    },
-    {
       "name": "legendY",
       "value": -100
-    },
-    {
-      "name": "orderField",
-      "value": "pairingScoreOrder",
-      "bind": {
-        "name": "Order pairing by: ",
-        "input": "select",
-        "options": [
-          "pairingScoreOrder",
-          "edgeOrder"
-        ]
-      }
     }
   ],
   "data": [
@@ -117,10 +87,6 @@
         }
       ],
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.display"
-        },
         {
           "type": "window",
           "as": [
@@ -253,9 +219,7 @@
         {
           "type": "window",
           "sort": {
-            "field": {
-              "signal": "orderField"
-            },
+            "field": "order",
             "order": "ascending"
           },
           "ops": [
@@ -372,16 +336,27 @@
           ],
           "fields": [
             "Weight",
-            null
+            null,
+            "eType",
+            "eType"
           ],
           "ops": [
             "sum",
-            "count"
+            "count",
+            "min",
+            "max"
           ],
           "as": [
             "Weight",
-            "count"
+            "count",
+            "eType_min",
+            "eType_max"
           ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
         },
         {
           "type": "lookup",
@@ -411,16 +386,27 @@
           ],
           "fields": [
             "Weight",
-            null
+            null,
+            "eType",
+            "eType"
           ],
           "ops": [
             "sum",
-            "count"
+            "count",
+            "min",
+            "max"
           ],
           "as": [
             "Weight",
-            "count"
+            "count",
+            "eType_min",
+            "eType_max"
           ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
         },
         {
           "type": "lookup",
@@ -535,6 +521,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -578,6 +567,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -621,6 +613,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "tooltip": {
                 "signal": "{'Status': datum.Status, 'Source': datum.Source,'Target':datum.Target, 'Type': datum.eType }"
               }
@@ -686,6 +681,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "tooltip": {
                 "signal": "{'Status': datum.Status, 'Source': datum.Source, 'Target':datum.Target, 'Type': datum.eType }"
               }
@@ -751,6 +749,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -856,8 +857,7 @@
                 "glPhone-undir5",
                 "glEmail-undir5",
                 "glCommunication-undir5"
-              ],
-              "drop": false
+              ]
             },
             {
               "type": "fold",
@@ -949,6 +949,9 @@
             "data": "aggregate-metric"
           },
           "encode": {
+            "cursor": {
+              "value": "pointer"
+            },
             "enter": {
               "yc": {
                 "scale": "metricScale",
@@ -1019,307 +1022,6 @@
                   "value": 1
                 }
               ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "timeline",
-      "type": "group",
-      "signals": [
-        {
-          "name": "xmove",
-          "value": 0,
-          "on": [
-            {
-              "events": "window:mousemove",
-              "update": "x()"
-            }
-          ]
-        },
-        {
-          "name": "timeRange",
-          "update": "timeExtent",
-          "on": [
-            {
-              "events": {
-                "signal": "timeZoom"
-              },
-              "update": "[(timeRange[0]+timeRange[1])/2 - timeZoom, (timeRange[0]+timeRange[1])/2 + timeZoom]"
-            },
-            {
-              "events": "@time:dblclick!, @timeBrush:dblclick!",
-              "update": "[timeExtent[0], timeExtent[1]]"
-            },
-            {
-              "events": "[@timeBrush:mousedown, window:mouseup] > window:mousemove!",
-              "update": "[timeRange[0] + invert('timeScale', x()) - invert('timeScale', xmove), timeRange[1] + invert('timeScale', x()) - invert('timeScale', xmove)]"
-            },
-            {
-              "events": "[@time:mousedown, window:mouseup] > window:mousemove!",
-              "update": "[min(timeAnchor, invert('timeScale', x())), max(timeAnchor, invert('timeScale', x()))]"
-            }
-          ]
-        },
-        {
-          "name": "timeZoom",
-          "value": 0,
-          "on": [
-            {
-              "events": "@time:wheel!, @timeBrush:wheel!",
-              "update": "0.5 * abs(span(timeRange)) * pow(1.0005, event.deltaY * pow(16, event.deltaMode))"
-            }
-          ]
-        },
-        {
-          "name": "timeAnchor",
-          "value": 0,
-          "on": [
-            {
-              "events": "@time:mousedown!",
-              "update": "invert('timeScale', x())"
-            }
-          ]
-        }
-      ],
-      "data": [
-        {
-          "name": "communication-by-time",
-          "source": [
-            "displayed-template-edges",
-            "displayed-candidate-edges"
-          ],
-          "transform": [
-            {
-              "type": "formula",
-              "as": "date",
-              "expr": "toDate(parseInt(datum.Time)*1000)"
-            },
-            {
-              "type": "timeunit",
-              "field": "date",
-              "units": [
-                "year",
-                "month"
-              ],
-              "signal": "tbin"
-            },
-            {
-              "type": "extent",
-              "field": "date",
-              "signal": "timeExtent"
-            },
-            {
-              "type": "aggregate",
-              "groupby": [
-                "unit1",
-                "Status"
-              ],
-              "ops": [
-                "count"
-              ],
-              "fields": [
-                null
-              ],
-              "as": [
-                "count"
-              ]
-            },
-            {
-              "type": "stack",
-              "groupby": [
-                "unit1"
-              ],
-              "sort": {
-                "field": "Status"
-              },
-              "field": "count"
-            }
-          ]
-        }
-      ],
-      "encode": {
-        "enter": {
-          "y": {
-            "signal": "timelineOffset"
-          },
-          "x": {
-            "value": 0
-          },
-          "height": {
-            "signal": "chartHeight"
-          },
-          "width": {
-            "signal": "trackWidth"
-          },
-          "stroke": {
-            "value": "black"
-          },
-          "fill": {
-            "value": "white"
-          }
-        }
-      },
-      "scales": [
-        {
-          "name": "timeScale",
-          "type": "band",
-          "round": true,
-          "domain": {
-            "signal": "timeSequence(tbin.unit, tbin.start, tbin.stop)"
-          },
-          "range": [
-            0,
-            {
-              "signal": "trackWidth"
-            }
-          ]
-        },
-        {
-          "name": "yscale",
-          "type": "linear",
-          "range": [
-            {
-              "signal": "chartHeight"
-            },
-            0
-          ],
-          "domain": {
-            "data": "communication-by-time",
-            "field": "y1"
-          },
-          "zero": true,
-          "nice": true
-        }
-      ],
-      "axes": [
-        {
-          "orient": "bottom",
-          "scale": "timeScale",
-          "formatType": "time",
-          "format": {
-            "signal": "timeUnitSpecifier(tbin.units)"
-          }
-        },
-        {
-          "orient": "left",
-          "scale": "yscale",
-          "tickCount": 4
-        }
-      ],
-      "marks": [
-        {
-          "type": "rect",
-          "name": "timeBrush",
-          "encode": {
-            "enter": {
-              "y": {
-                "value": 0
-              },
-              "height": {
-                "signal": "chartHeight"
-              },
-              "fill": {
-                "value": "gray"
-              }
-            },
-            "update": {
-              "x": {
-                "signal": "scale('timeScale', timeRange[0])"
-              },
-              "x2": {
-                "signal": "scale('timeScale', timeRange[1])"
-              }
-            }
-          }
-        },
-        {
-          "type": "rect",
-          "interactive": false,
-          "encode": {
-            "enter": {
-              "y": {
-                "value": 0
-              },
-              "height": {
-                "signal": "chartHeight"
-              },
-              "fill": {
-                "value": "firebrick"
-              }
-            },
-            "update": {
-              "x": {
-                "signal": "scale('timeScale', timeRange[0])"
-              },
-              "width": {
-                "value": 1
-              }
-            }
-          }
-        },
-        {
-          "type": "rect",
-          "interactive": false,
-          "encode": {
-            "enter": {
-              "y": {
-                "value": 0
-              },
-              "height": {
-                "signal": "chartHeight"
-              },
-              "fill": {
-                "value": "firebrick"
-              }
-            },
-            "update": {
-              "x": {
-                "signal": "scale('timeScale', timeRange[1])"
-              },
-              "width": {
-                "value": 1
-              }
-            }
-          }
-        },
-        {
-          "type": "rect",
-          "name": "time-bin",
-          "from": {
-            "data": "communication-by-time"
-          },
-          "encode": {
-            "update": {
-              "x": {
-                "scale": "timeScale",
-                "field": "unit1"
-              },
-              "width": {
-                "scale": "timeScale",
-                "band": 1
-              },
-              "y": {
-                "scale": "yscale",
-                "field": "y0"
-              },
-              "y2": {
-                "scale": "yscale",
-                "field": "y1"
-              },
-              "fill": {
-                "scale": "edgeStatusColor",
-                "field": "Status"
-              },
-              "fillOpacity": {
-                "value": 1
-              }
-            },
-            "hover": {
-              "fillOpacity": {
-                "value": 0.7
-              }
             }
           }
         }
@@ -1461,7 +1163,7 @@
   ],
   "title": {
     "text": {
-      "signal": "'Person-pairing comparison view. Matched ' + matchedNodes + '/' + totalNodes + '.'"
+      "signal": "'Person-pairing comparison view between template (top) and candidate (bottom). Matched ' + matchedNodes + '/' + totalNodes"
     }
   },
   "legends": [
@@ -1509,4 +1211,3 @@
     }
   ]
 }
-
