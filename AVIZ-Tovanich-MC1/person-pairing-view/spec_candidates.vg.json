@@ -57,8 +57,7 @@
           "dtwCommunication",
           "dtwTravel",
           "glPhone-undir5",
-          "glEmail-undir5",
-          "glCommunication-undir5"
+          "glEmail-undir5"
         ]
       }
     },
@@ -71,6 +70,10 @@
         "min": 0,
         "max": 1
       }
+    },
+   {
+      "name": "legendY",
+      "value": -100
     },
     {
       "name": "orderField",
@@ -90,43 +93,29 @@
       "name": "sortingMetrics",
       "values": [
         {
-          "value": "demographicsCosine",
-          "display": true
+          "value": "demographicsCosine"
         },
         {
-          "value": "travelJaccard",
-          "display": true
+          "value": "travelJaccard"
         },
         {
-          "value": "dtwAllEdges",
-          "display": true
+          "value": "dtwAllEdges"
         },
         {
-          "value": "dtwCommunication",
-          "display": true
+          "value": "dtwCommunication"
         },
         {
-          "value": "dtwTravel",
-          "display": true
+          "value": "dtwTravel"
         },
         {
-          "value": "glPhone-undir5",
-          "display": true
+          "value": "glPhone-undir5"
         },
         {
-          "value": "glEmail-undir5",
-          "display": true
-        },
-        {
-          "value": "glCommunication-undir5",
-          "display": true
+          "value": "glEmail-undir5"
         }
+
       ],
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.display"
-        },
         {
           "type": "window",
           "as": [
@@ -374,16 +363,27 @@
           ],
           "fields": [
             "Weight",
-            null
+            null,
+            "eType",
+            "eType"
           ],
           "ops": [
             "sum",
-            "count"
+            "count",
+            "min",
+            "max"
           ],
           "as": [
             "Weight",
-            "count"
+            "count",
+            "eType_min",
+            "eType_max"
           ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
         },
         {
           "type": "lookup",
@@ -413,16 +413,27 @@
           ],
           "fields": [
             "Weight",
-            null
+            null,
+            "eType",
+            "eType"
           ],
           "ops": [
             "sum",
-            "count"
+            "count",
+            "min",
+            "max"
           ],
           "as": [
             "Weight",
-            "count"
+            "count",
+            "eType_min",
+            "eType_max"
           ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.eType_min != datum.eType_max ? [datum.eType_min, datum.eType_max] : [datum.eType_min]",
+          "as": "eType"
         },
         {
           "type": "lookup",
@@ -475,8 +486,7 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ],
               "as": [
                 "metric",
@@ -583,6 +593,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -632,6 +645,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -681,6 +697,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "tooltip": {
                 "signal": "{'Status': datum.Status, 'Source': datum.Source,'Target':datum.Target, 'Type': datum.eType }"
               }
@@ -752,6 +771,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "tooltip": {
                 "signal": "{'Status': datum.Status, 'Source': datum.Source, 'Target':datum.Target, 'Type': datum.eType }"
               }
@@ -823,6 +845,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "opacity": {
                 "value": 1
               },
@@ -906,11 +931,9 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ],
               "ops": [
-                "mean",
                 "mean",
                 "mean",
                 "mean",
@@ -926,8 +949,7 @@
                 "dtwCommunication",
                 "dtwTravel",
                 "glPhone-undir5",
-                "glEmail-undir5",
-                "glCommunication-undir5"
+                "glEmail-undir5"
               ]
             },
             {
@@ -1021,6 +1043,9 @@
           },
           "encode": {
             "enter": {
+              "cursor": {
+                "value": "pointer"
+              },
               "yc": {
                 "scale": "metricScale",
                 "field": "category"
@@ -1408,7 +1433,7 @@
                 "signal": "-nodeSize"
               },
               "yc": {
-                "value": 190
+                "signal": "templateAxisOffset"
               },
               "text": {
                 "value": "template"
@@ -1439,7 +1464,7 @@
                 "signal": "-nodeSize"
               },
               "yc": {
-                "value": 300
+                "signal": "candidateAxisOffset"
               },
               "text": {
                 "value": "candidate"
@@ -1537,15 +1562,43 @@
   },
   "legends": [
     {
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 0
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
       "title": "Communication links",
-      "fill": "edgeStatusColor"
+      "fill": "edgeStatusColor",
+      "direction": "horizontal"
     },
     {
-      "title": "Distance (blue is more similar)",
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 250
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
+      "title": "Distance",
       "fill": "distanceScore",
       "direction": "horizontal"
     },
     {
+      "titleColor": "gray",
+      "labelColor": "gray",
+      "orient": "none",
+      "legendX": {
+        "value": 500
+      },
+      "legendY": {
+        "signal": "legendY"
+      },
       "title": "Country (from phone calls)",
       "fill": "nodeCountries",
       "direction": "horizontal"

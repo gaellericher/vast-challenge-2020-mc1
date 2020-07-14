@@ -75,7 +75,7 @@ Source,eType,Target,Time,Weight,SourceLocation,TargetLocation,SourceLatitude,Sou
 41,0,39,1739816110,1,,,,,,,common
 67,0,39,1739817305,1,,,,,,,common
 47,0,39,1739850042,1,,,,,,,common
-39,0,66,1739888149,1,,,,,,,out of pairing
+39,0,66,1739888149,1,,,,,,,common
 67,0,47,1739946143,1,,,,,,,common
 41,1,0,1739956126,1,5.0,5.0,,,,,common
 41,0,65,1740093479,1,,,,,,,common
@@ -94,7 +94,7 @@ Source,eType,Target,Time,Weight,SourceLocation,TargetLocation,SourceLatitude,Sou
 40,0,39,1740952311,1,,,,,,,common
 67,0,39,1740969326,1,,,,,,,common
 47,0,39,1740969719,1,,,,,,,common
-39,0,66,1740990086,1,,,,,,,out of pairing
+39,0,66,1740990086,1,,,,,,,common
 47,0,39,1740994952,1,,,,,,,common
 67,0,39,1741026340,1,,,,,,,common
 41,1,0,1741030839,1,5.0,5.0,,,,,common
@@ -108,7 +108,7 @@ Source,eType,Target,Time,Weight,SourceLocation,TargetLocation,SourceLatitude,Sou
 65,1,40,1741396182,1,5.0,5.0,,,,,common
 41,1,65,1741450949,1,5.0,5.0,,,,,common
 39,0,47,1741485498,1,,,,,,,common
-39,0,66,1741520722,1,,,,,,,out of pairing
+39,0,66,1741520722,1,,,,,,,common
 41,1,65,1741682014,1,5.0,5.0,,,,,common
 40,0,39,1741785359,1,,,,,,,common
 40,1,65,1741856747,1,5.0,5.0,,,,,common
@@ -117,9 +117,9 @@ Source,eType,Target,Time,Weight,SourceLocation,TargetLocation,SourceLatitude,Sou
 47,0,39,1741906619,1,,,,,,,common
 65,0,0,1741930786,1,,,,,,,common
 47,0,39,1742095660,1,,,,,,,common
-39,0,66,1742209712,1,,,,,,,out of pairing
+39,0,66,1742209712,1,,,,,,,common
 67,0,39,1742284292,1,,,,,,,common
-39,0,66,1742408428,1,,,,,,,out of pairing
+39,0,66,1742408428,1,,,,,,,common
 39,0,47,1742438514,1,,,,,,,common
 41,1,65,1742585204,1,5.0,5.0,,,,,common
 41,0,39,1742590375,1,,,,,,,common
