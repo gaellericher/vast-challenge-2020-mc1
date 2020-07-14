@@ -1,0 +1,172 @@
+﻿<SAMI>
+<HEAD>
+<TITLE>SAMI Output</TITLE>
+
+<SAMIParam>
+  Metrics {time:ms;}
+  Spec {MSFT:1.0;}
+</SAMIParam>
+
+<STYLE TYPE="text/css">
+<!--
+  P { font-family: Arial; font-size: 36; font-weight: normal; color: #ffffff; background-color: #000000; text-align: center; }
+
+  #Source {color: red; background-color: blue; font-family: Courier; font-size: 12pt; font-weight: normal; text-align: left; }
+  .enCC { name: English; lang: en; SAMIType: CC; }
+-->
+</STYLE>
+
+</HEAD>
+<BODY>
+<SYNC Start=0>
+  <P Class=enCC>In this video we discuss our solution to the VAST 2020 Mini Challenge 1.</P>
+</SYNC>
+<SYNC Start=5266>
+  <P Class=enCC>In order to solve the challenge we built a series of tools. We will show these tools first before discussing our solutions</P>
+</SYNC>
+<SYNC Start=12399>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=12400>
+  <P Class=enCC>We started by using simple node-link diagrams to engage in exploratory comparison of the template and candidate graphs. The different </P>
+</SYNC>
+<SYNC Start=22800>
+  <P Class=enCC>shapes of the node indicate the node type. Circles, for example, represent persons while stars represent travel destinations.  The color </P>
+</SYNC>
+<SYNC Start=28000>
+  <P Class=enCC>of a node indicates an assigned location.  We filtered edge types using the checkboxes.  </P>
+</SYNC>
+<SYNC Start=33233>
+  <P Class=enCC>In order to derive graph structural metrics, we used graphlets which are structural patterns within a limited number of nodes of a graph.</P>
+</SYNC>
+<SYNC Start=41299>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=41300>
+  <P Class=enCC>Graphlets allowed us to compare the connectivity structure between the template and the candidates, and doing pairwise node </P>
+</SYNC>
+<SYNC Start=45333>
+  <P Class=enCC>matching to find good matches in the big graph. </P>
+</SYNC>
+<SYNC Start=49366>
+  <P Class=enCC>We compared the graphlet frequencies of the persons between the template and the candidate graphs, using heatmaps…</P>
+</SYNC>
+<SYNC Start=52332>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=52333>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=55333>
+  <P Class=enCC>…and using global graphlet frequencies, to see if there are some correlations. </P>
+</SYNC>
+<SYNC Start=60066>
+  <P Class=enCC>In order to analyze activity patterns in the data we created custom temporal views. This one here shows detailed temporal activity in each </P>
+</SYNC>
+<SYNC Start=64066>
+  <P Class=enCC>graph. Edge types are encoded by color and people sorted by their number of activities (edges).</P>
+</SYNC>
+<SYNC Start=68066>
+  <P Class=enCC>We also created a temporal series view by counting the number of edges with temporal information for each day. This helped us </P>
+</SYNC>
+<SYNC Start=77066>
+  <P Class=enCC>estimate the similarity of candidate graphs and detect a time shift compared to the template graph.</P>
+</SYNC>
+<SYNC Start=86099>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=86100>
+  <P Class=enCC>This visualization aims at evaluating how good a match is based on similarity measures and the communication channels. The top row of </P>
+</SYNC>
+<SYNC Start=108433>
+  <P Class=enCC>circles are template nodes. The bottom row of circles are matched nodes in a candidate.  In between each pair of nodes are 6 rows of </P>
+</SYNC>
+<SYNC Start=119599>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=119600>
+  <P Class=enCC>similarity.  These 6 rows allow to give an overview of the strength of a match. Arcs correspond to communications by phone or </P>
+</SYNC>
+<SYNC Start=125166>
+  <P Class=enCC>mail.  On the top, the arcs are edges in the template graph.  On the bottom in the matched graph.  The arc color indicates the agreement </P>
+</SYNC>
+<SYNC Start=127966>
+  <P Class=enCC>of the two graphs. A green arc is common to both graphs while a red or gray arc is missing from one graph or the other.  Finally, the </P>
+</SYNC>
+<SYNC Start=129366>
+  <P Class=enCC>bottom graph plots the edge colors in relation with the time to ease the identification of matches that perform well only for a certain </P>
+</SYNC>
+<SYNC Start=130066>
+  <P Class=enCC>period of time.</P>
+</SYNC>
+<SYNC Start=130766>
+  <P Class=enCC>Next, we show the answers we arrived at for Mini Challenge 1.</P>
+</SYNC>
+<SYNC Start=136499>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=136500>
+  <P Class=enCC>Graphlets and custom temporal visualizations allowed us to choose an answer for Question 1. Both confirmed that Candidate Graph 2 had </P>
+</SYNC>
+<SYNC Start=141200>
+  <P Class=enCC>the closest similarity.</P>
+</SYNC>
+<SYNC Start=145900>
+  <P Class=enCC>For Question 2 we applied a crawling algorithm to extract subgraphs from the seeding edges. The results can be evaluated </P>
+</SYNC>
+<SYNC Start=153366>
+  <P Class=enCC>using a node-link view or the person-matching-view tool. We can see that the subgraphs found have a lot of common edges </P>
+</SYNC>
+<SYNC Start=157099>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=157100>
+  <P Class=enCC>with the template.</P>
+</SYNC>
+<SYNC Start=160866>
+  <P Class=enCC>For Question 3, we were able to find a perfect match mainly by looking for nodes with a very similar demographics profile, or whose travel </P>
+</SYNC>
+<SYNC Start=167466>
+  <P Class=enCC>records, shifted by 14 days, included all the travels of nodes in the template graph.</P>
+</SYNC>
+<SYNC Start=174099>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=174100>
+  <P Class=enCC>For Question 4, we created an extended subgraph from the matched graph we found. We found a communication peak on the 11th </P>
+</SYNC>
+<SYNC Start=185366>
+  <P Class=enCC>and 12th of November. We discovered that there were 7 days without communication after which 8 people communicated </P>
+</SYNC>
+<SYNC Start=190999>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=191000>
+  <P Class=enCC>extensively. We suspect that those 8 people along with 4 more that communicated in the previous 2 days are responsible for the </P>
+</SYNC>
+<SYNC Start=193800>
+  <P Class=enCC>incident.</P>
+</SYNC>
+<SYNC Start=196633>
+  <P Class=enCC>We faced two main challenges : First the graphlets computation was costly in the big graph, and finding a good distance was not </P>
+</SYNC>
+<SYNC Start=206133>
+  <P Class=enCC>trivial. Second, choosing the best distance or combination of distances was hard given all </P>
+</SYNC>
+<SYNC Start=210866>
+  <P Class=enCC>the possibilities.This is why we also built a manual matching tool in the end of our analysis process.</P>
+</SYNC>
+<SYNC Start=215632>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+<SYNC Start=215633>
+  <P Class=enCC>The manual matching tool is composed of multiple views. It works by allowing to select possible node pairs from a sortable list of </P>
+</SYNC>
+<SYNC Start=222533>
+  <P Class=enCC>similarity measures. Each node pair can be studied in detail before deciding to incorporate it in the final match or drop it.</P>
+</SYNC>
+<SYNC Start=229466>
+  <P Class=enCC>&nbsp;</P>
+</SYNC>
+</BODY>
+</SAMI>
